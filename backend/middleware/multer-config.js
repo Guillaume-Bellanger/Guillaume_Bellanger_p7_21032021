@@ -5,11 +5,15 @@ const MIME_TYPES = {
   "image/jpeg": "jpg",
   "image/png": "png",
 };
-
+//fonction destination : indique a multer d'enregistrer les fichiers dans le dossier images ;
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, "images");
   },
+
+  //fonction filename : indique a multer d'utiliser le nom d'origine, de remplacer les espaces
+  //par des underscovers et d'ajouter un timestamp Date.now() comme nom de fichier.
+
   filename: (req, file, callback) => {
     const name = file.originalname.split(" ").join("_"); //Supprime les espaces du nom du fichier et les remplace par des underscore afin d'éviter les erreurs côté serveur
     const extension = MIME_TYPES[file.mimetype]; // Crée l'extension du fichier en fonction du dictionnaire MIME_TYPES
@@ -22,13 +26,14 @@ module.exports = multer({ storage }).single("image"); // On précise à multer q
 //Dans ce middleware :
 
 /*
-nous créons une constante storage , à passer à multer comme configuration, qui contient la logique nécessaire pour indiquer à multer où enregistrer les fichiers entrants :
+nous créons une constante storage , à passer à multer comme configuration, qui contient la logique nécessaire
+ pour indiquer à multer où enregistrer les fichiers entrants :
 
-la fonction destination indique à multer d'enregistrer les fichiers dans le dossier images ;
-
-la fonction filename indique à multer d'utiliser le nom d'origine, de remplacer les espaces par des underscores et d'ajouter un timestamp Date.now() comme nom de fichier.
+la fonction filename indique à multer d'utiliser le nom d'origine, de remplacer les espaces par des underscores 
+et d'ajouter un timestamp Date.now() comme nom de fichier.
  Elle utilise ensuite la constante dictionnaire de type MIME pour résoudre l'extension de fichier appropriée ;
 
-nous exportons ensuite l'élément multer entièrement configuré, lui passons notre constante storage et lui indiquons que nous gérerons uniquement les téléchargements de fichiers image.
+nous exportons ensuite l'élément multer entièrement configuré, lui passons notre constante storage et lui indiquons
+ que nous gérerons uniquement les téléchargements de fichiers image.
 
 */
