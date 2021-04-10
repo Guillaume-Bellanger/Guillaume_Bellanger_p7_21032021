@@ -30,6 +30,7 @@ exports.allComments = (req, res, next) => {
 };
 
 exports.postComment = (req, res, next) => {
+  console.log("test");
   models.Comment.create({
     include: [
       {
@@ -51,11 +52,13 @@ exports.postComment = (req, res, next) => {
 };
 
 exports.updateComment = (req, res, next) => {
+  console.log("testupd");
   models.Comment.findOne({
     attributes: ["userId", "commentId", "msgId"],
     where: { commentId: req.params.commentId },
   })
     .then((commentFound) => {
+      console.log(commentFound + "test eupdate");
       if (commentFound) {
         models.User.findOne({
           attributes: ["isAdmin"],

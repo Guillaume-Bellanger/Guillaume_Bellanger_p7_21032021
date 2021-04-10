@@ -5,14 +5,11 @@ const MIME_TYPES = {
   "image/jpeg": "jpg",
   "image/png": "png",
 };
-//fonction destination : indique a multer d'enregistrer les fichiers dans le dossier images ;
+
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, "images");
   },
-
-  //fonction filename : indique a multer d'utiliser le nom d'origine, de remplacer les espaces
-  //par des underscovers et d'ajouter un timestamp Date.now() comme nom de fichier.
 
   filename: (req, file, callback) => {
     const name = file.originalname.split(" ").join("_"); //Supprime les espaces du nom du fichier et les remplace par des underscore afin d'éviter les erreurs côté serveur

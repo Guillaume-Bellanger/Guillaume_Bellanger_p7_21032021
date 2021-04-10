@@ -4,10 +4,10 @@
       <v-app-bar
         app
         dark
-        color="#43a047"
+        color="#33A8FF"
         shrink-on-scroll
         prominent
-        src="https://picsum.photos/1920/1080?random"
+        src="https://ibb.co/VMF87KZ"
         fade-img-on-scroll
       >
         <template v-slot:img="{ props }">
@@ -18,10 +18,10 @@
         </template>
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Menu</v-toolbar-title>
+        <v-toolbar-title>GROUPOMANIA</v-toolbar-title>
         <v-spacer></v-spacer>
 
-        <v-col cols="5" sm="3" md="2">
+        <v-col cols="4" sm="3" md="2">
           <v-text-field
             hide-details
             prepend-icon="mdi-magnify"
@@ -39,7 +39,7 @@
 
       <v-navigation-drawer v-model="drawer" app temporary>
         <v-list nav dense>
-          <v-list-item-group active-class="deep-purple--text text--accent-4">
+          <v-list-item-group active-class="border" color="#33A8FF">
             <v-list-item @click="home()">
               <v-list-item-icon>
                 <v-icon>mdi-home</v-icon>

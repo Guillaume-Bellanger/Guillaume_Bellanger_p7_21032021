@@ -4,7 +4,7 @@
       <v-row align="center" justify="center" class="mb-5">
         <v-col cols="12" sm="12" md="8">
           <router-link :to="`/message/`">
-            <v-btn outlined absolute left text>
+            <v-btn outlined absolute left text color="#33A8FF">
               <v-icon class="mr-2">mdi-undo</v-icon>
               Retour aux messages
             </v-btn>
@@ -22,9 +22,20 @@
             v-if="isAdmin"
           >
             <template v-slot:activator>
-              <v-btn v-model="fab" color="blue darken-2" dark fab small>
-                <v-icon v-if="fab"> mdi-close </v-icon>
-                <v-icon v-else> mdi-format-list-bulleted-square </v-icon>
+              <v-btn
+                class="mt-2 mr-1"
+                v-model="fab"
+                color="black"
+                dark
+                fab
+                small
+              >
+                <v-icon v-if="fab">
+                  mdi-close
+                </v-icon>
+                <v-icon v-else>
+                  mdi-format-list-bulleted-square
+                </v-icon>
               </v-btn>
             </template>
             <v-btn fab dark small color="green" @click="dialog = true">
@@ -45,8 +56,12 @@
           >
             <template v-slot:activator>
               <v-btn v-model="fab" color="blue darken-2" dark fab x-small>
-                <v-icon v-if="fab"> mdi-close </v-icon>
-                <v-icon v-else> mdi-format-list-bulleted-square </v-icon>
+                <v-icon v-if="fab">
+                  mdi-close
+                </v-icon>
+                <v-icon v-else>
+                  mdi-format-list-bulleted-square
+                </v-icon>
               </v-btn>
             </template>
             <v-btn fab dark small color="green" @click="dialog = true">
@@ -155,7 +170,7 @@
 
                         <v-btn
                           text
-                          color="primary"
+                          color="#33A8FF"
                           @click="(dialog2 = false), postComment()"
                           >Envoyer</v-btn
                         >
@@ -191,8 +206,12 @@
             >
               <template v-slot:activator>
                 <v-btn v-model="fab" fab icon x-small>
-                  <v-icon v-if="fab"> mdi-close </v-icon>
-                  <v-icon v-else> mdi-dots-vertical </v-icon>
+                  <v-icon v-if="fab">
+                    mdi-close
+                  </v-icon>
+                  <v-icon v-else>
+                    mdi-dots-vertical
+                  </v-icon>
                 </v-btn>
               </template>
               <v-btn fab dark small color="green" @click="dialog3 = true">
@@ -219,8 +238,12 @@
             >
               <template v-slot:activator>
                 <v-btn v-model="fab" fab icon x-small>
-                  <v-icon v-if="fab"> mdi-close </v-icon>
-                  <v-icon v-else> mdi-dots-vertical </v-icon>
+                  <v-icon v-if="fab">
+                    mdi-close
+                  </v-icon>
+                  <v-icon v-else>
+                    mdi-dots-vertical
+                  </v-icon>
                 </v-btn>
               </template>
               <v-btn fab small color="green" @click="dialog3 = true">
@@ -297,7 +320,6 @@
 </template>
 
 <script>
-import AuthenticationService from "@/services/AuthenticationService";
 import axios from "axios";
 import store from "../store/index.js";
 import { mapState } from "vuex";
@@ -499,18 +521,16 @@ export default {
           Swal.fire({
             icon: "success",
             title: "Message modifié",
-            showConfirmButton: false,
-            timer: 1000,
+            showConfirmButton: true,
           });
         })
         .catch((error) => {
-          // Handle error.
+          // erreur de manipulation
           Swal.fire({
             icon: "error",
             title:
               "Le messagen'a pas pu être modifié, veuillez réessayer plus tard !",
-            showConfirmButton: false,
-            timer: 1000,
+            showConfirmButton: true,
           });
           console.log("An error occurred:", error.response);
         });
@@ -518,11 +538,11 @@ export default {
     deleteComment(commentId) {
       Swal.fire({
         title: "Êtes-vous sûr ?",
-        text: "Vous me pourrez pas revenir en arrière !",
+        text: "Vous ne pourrez pas revenir en arrière !",
         icon: "warning",
         confirmButtonText: "Oui, supprimer le commentaire!",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#33A8FF",
         cancelButtonColor: "#d33",
       })
         .then((result) => {
@@ -530,8 +550,7 @@ export default {
             Swal.fire({
               title: "Commentaire supprimé!",
               icon: "success",
-              showConfirmButton: false,
-              timer: 1000,
+              showConfirmButton: true,
             });
             axios
               .delete(
@@ -571,16 +590,17 @@ export default {
             icon: "error",
             title:
               "Le commentaire n'a pas pu être supprimé, veuillez réessayer plus tard !",
-            showConfirmButton: false,
-            timer: 2500,
+            showConfirmButton: true,
           });
           console.log("An error occurred:", error.response);
         });
     },
     updateComment(commentId) {
+      console.log(" notre test " + commentId);
+      console.log(this.id);
       axios
         .put(
-          `http:localhost:3000/message/${this.id}/comment/${commentId}`,
+          `http://localhost:3000/comment/${commentId}`,
           {
             comment: this.comment.comment,
           },
@@ -595,8 +615,7 @@ export default {
           Swal.fire({
             icon: "success",
             title: "Commentaire modifié",
-            showConfirmButton: false,
-            timer: 1000,
+            showConfirmButton: true,
           });
         })
         .catch((error) => {
@@ -604,8 +623,7 @@ export default {
             icon: "error",
             title:
               "Le commentaire n'a pas pu être modifié, veuillez réessayer plus tard !",
-            showConfirmButton: false,
-            timer: 1000,
+            showConfirmButton: true,
           });
           console.log("An error occurred:", error.response);
         });
