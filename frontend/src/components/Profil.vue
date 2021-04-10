@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid fill-height class="mb-4 mt-5">
+  <v-container light-blue fill-height class="mb-4 mt-5">
     <v-row justify="center">
       <v-col cols="12" sm="12" md="8">
         <v-card id="app">
@@ -12,7 +12,7 @@
             <v-list-item>
               <v-btn
                 class="mx-auto mt-3"
-                color="primary"
+                color="#33A8FF"
                 v-if="isAdmin"
                 @click="changeAvatar()"
                 >Changer d'avatar
@@ -21,7 +21,7 @@
               <v-btn
                 class="mx-auto mt-3"
                 small
-                color="primary"
+                color="#33A8FF"
                 v-else-if="id == userId"
                 @click="changeAvatar()"
                 >Changer d'avatar
@@ -45,7 +45,7 @@
                   >Description :</v-list-item-title
                 >
                 <v-btn
-                  color="primary"
+                  color="#33A8FF"
                   icon
                   class="mb-3"
                   @click="changingBio = true"
@@ -54,7 +54,7 @@
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn
-                  color="primary"
+                  color="#33A8FF"
                   icon
                   class="mb-3"
                   @click="changingBio = true"
@@ -94,7 +94,7 @@
                   v-model="changedBio"
                 ></v-textarea>
                 <v-btn
-                  color="primary"
+                  color="#33A8FF"
                   icon
                   class="mb-3"
                   v-if="changingBio == true"
@@ -109,7 +109,6 @@
           <v-card-actions justify="end" align="end">
             <v-btn
               color="error"
-              x-small
               class="mb-3"
               v-if="isAdmin"
               @click="deleteProfil()"
@@ -119,7 +118,6 @@
             </v-btn>
             <v-btn
               color="error"
-              x-small
               class="mb-3"
               v-else-if="id == userId"
               @click="deleteProfil()"
@@ -128,7 +126,7 @@
               Supprimer le compte
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn color="primary" class="mb-3" @click="updateProfil()">
+            <v-btn color="#33A8FF" class="mb-3" @click="updateProfil()">
               <v-icon left dark>mdi-checkbox-marked-circle</v-icon>
               Enregistrer
             </v-btn>
@@ -140,7 +138,6 @@
 </template>
 
 <script>
-import AuthenticationService from "@/services/AuthenticationService";
 import axios from "axios";
 import store from "../store/index.js";
 import { mapState } from "vuex";
@@ -256,5 +253,8 @@ export default {
 <style scoped>
 #app {
   margin-top: 50px;
+}
+.container {
+  max-width: 1950px;
 }
 </style>

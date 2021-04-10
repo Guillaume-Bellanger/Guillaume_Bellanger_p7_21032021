@@ -1,3 +1,5 @@
+//outil d'identification et de rapport sur les modéles
+
 module.exports = {
   root: true,
   env: {

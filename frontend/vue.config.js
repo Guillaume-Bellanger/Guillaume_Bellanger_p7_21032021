@@ -1,5 +1,4 @@
+//compatibilité IE
 module.exports = {
-  "transpileDependencies": [
-    "vuetify"
-  ]
-}
+  transpileDependencies: ["vuetify"],
+};

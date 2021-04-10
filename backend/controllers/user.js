@@ -131,7 +131,7 @@ exports.viewProfil = (req, res, next) => {
 
 exports.editProfil = (req, res, next) => {
   /*
-    Fonction de changement de photo de profil en cours
+    Fonction de changement de photo de profil en cours de réalisation
     */
 
   // const avatar = req.body.avatar

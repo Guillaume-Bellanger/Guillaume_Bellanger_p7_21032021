@@ -1,20 +1,27 @@
 <template>
-  <v-container fluid fill-height>
+  <v-container class="fill-height" fluid>
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="6">
         <v-card class="elevation-12">
           <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>Connexion</v-toolbar-title>
+            <v-toolbar-title>Créer votre compte</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
             <v-form>
               <v-text-field
+                label="Pseudo"
+                name="name"
+                prepend-icon="mdi-account-details"
+                type="text"
+                v-model="name"
+              ></v-text-field>
+
+              <v-text-field
                 label="Adresse E-mail"
-                name="email"
+                name="login"
                 prepend-icon="mdi-account"
                 type="text"
                 v-model="email"
-                autocomplete=""
               ></v-text-field>
 
               <v-text-field
@@ -22,16 +29,14 @@
                 label="Mot de passe"
                 name="password"
                 prepend-icon="mdi-lock"
-                required
                 type="password"
                 v-model="password"
-                autocomplete="new password"
               ></v-text-field>
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="login()">Se connecter</v-btn>
+            <v-btn color="primary" @click="register()">Créer un compte</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -40,34 +45,33 @@
 </template>
 
 <script>
-import AuthenticationService from "@/services/AuthenticationService";
-import { required, email } from "vuelidate/lib/validators";
 import axios from "axios";
 
 export default {
-  name: "Login",
+  name: "SignUp",
   data() {
     return {
       email: "",
       password: "",
+      name: "",
     };
   },
   methods: {
-    login() {
+    register() {
       axios
-        .post("http://localhost:3000/login", {
+        .post("http://localhost:3000/signup", {
           email: this.email,
           password: this.password,
+          name: this.name,
         })
         .then((response) => {
-          console.log(response);
-          this.$store.dispatch("setToken", response.data.token);
-          this.$store.dispatch("setUser", response.data.userId);
-          this.$store.dispatch("setAdmin", response.data.isAdmin);
-          this.$router.push("/Message");
+          // reussite de manipulation.
+          console.log(response.data);
+          this.$router.push("/login");
         })
         .catch((error) => {
-          console.log("il y a une erreur:", error.response);
+          // erreur de manipulation
+          console.log("An error occurred:", error.response);
         });
     },
   },
