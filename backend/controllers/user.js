@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const mailValidator = require("email-validator"); //Permet de s'assurer que l'utilisateur utilise une adresse email valide via une REGEX contenu dans ce plugin
 const passwordValidator = require("password-validator"); // Idem mais pour avoir un mot de passe fort via les propriétés contenues dans schema
+const fs = require("fs");
 
 const schema = new passwordValidator();
 
@@ -130,45 +131,46 @@ exports.viewProfil = (req, res, next) => {
 };
 
 exports.editProfil = (req, res, next) => {
-  /*
-    Fonction de changement de photo de profil en cours de réalisation
-    */
+  //ternaire verif si req.file si oui oon ajout l'objet body.user et la clef avatar correspond a l'url de l'image
+  //sinon user objet est = objet body
+  const userObject = req.file
+    ? {
+        avatar: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : { ...req.body };
 
-  // const avatar = req.body.avatar
-  // const userObject = req.file ?
-  //     {
-  //     ...JSON.parse(req.body.user),
-  //     avatar: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-  //     } : { ...req.body };
   models.User.findOne({
+    // cherche un utilisdateur dont l'id est celui founris en paramattre
+    attributes: ["isAdmin", "userId", "avatar"],
     where: { userId: req.params.userId },
   })
     .then((userFound) => {
-      if (userFound) {
-        models.User.findOne({
-          attributes: ["isAdmin"],
-          where: { userId: getUserId(req) },
-        }).then((userIsAdmin) => {
-          if (
-            getUserId(req) == req.params.userId ||
-            userIsAdmin.dataValues.isAdmin == true
-          ) {
-            models.User.update(req.body, {
-              attributes: ["bio", "avatar"],
-              where: { userId: req.params.userId },
-            })
-              .then(() =>
-                res.status(201).json({ message: "Profil mis à jour" })
-              )
-              .catch((error) => res.status(500).json({ error }));
-          } else {
-            res.status(401).json({
-              error: "Vous n'êtes pas autorisé à mettre à jour le profil",
+      // quand l'utilisateur est trouvé
+      //quand l'utilisateur est trouvé on verifis qu'il est proprietaire du profil ou administrateur
+      //si c'est le cas on maj le profil sinon on renvoie une erreur
+
+      if (
+        userFound &&
+        (userFound.isAdmin == true || userFound.userId == getUserId(req))
+      ) {
+        models.User.update(userObject, {
+          attributes: ["bio", "avatar"],
+          where: { userId: req.params.userId },
+        })
+          .then(() => {
+            const supImg = userFound.avatar.split("/")[4];
+
+            fs.unlink("images/" + supImg, () => {
+              res.status(200).json({ message: "Profil mis à jour" });
             });
-          }
-        });
+          })
+          .catch((error) => res.status(500).json({ error }));
       } else {
-        res.status(404).json({ error: "Utilisateur non trouvé" });
+        res.status(401).json({
+          error: "Vous n'êtes pas autorisé à mettre à jour le profil",
+        });
       }
     })
     .catch((error) => {

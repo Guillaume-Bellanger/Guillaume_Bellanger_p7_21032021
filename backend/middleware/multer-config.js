@@ -7,7 +7,11 @@ const MIME_TYPES = {
 };
 
 const storage = multer.diskStorage({
+  limits: {
+    fileSize: 2000000, //2Mo
+  },
   destination: (req, file, callback) => {
+    //destination des images uploader
     callback(null, "images");
   },
 

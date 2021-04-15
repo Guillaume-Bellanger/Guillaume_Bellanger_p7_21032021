@@ -1,4 +1,5 @@
 "use strict";
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("Messages", {
@@ -23,11 +24,11 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: "TIMESTAMP",
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: "TIMESTAMP",
       },
     });
   },

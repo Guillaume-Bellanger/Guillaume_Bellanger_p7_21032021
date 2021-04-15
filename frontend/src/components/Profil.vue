@@ -10,6 +10,12 @@
               </v-avatar>
             </v-list-item>
             <v-list-item>
+              <input
+                id="imgProfil"
+                @change="changeAvatar"
+                type="file"
+                nome="imgProfil"
+              />
               <v-btn
                 class="mx-auto mt-3"
                 color="#33A8FF"
@@ -18,6 +24,7 @@
                 >Changer d'avatar
                 <v-icon>mdi-system-update-alt</v-icon>
               </v-btn>
+
               <v-btn
                 class="mx-auto mt-3"
                 small
@@ -25,6 +32,7 @@
                 v-else-if="id == userId"
                 @click="changeAvatar()"
                 >Changer d'avatar
+
                 <v-icon>mdi-upload</v-icon>
               </v-btn>
             </v-list-item>
@@ -151,6 +159,7 @@ export default {
       user: [],
       changingBio: false,
       changedBio: "",
+      imgProfil: "",
     };
   },
   mounted() {
@@ -175,7 +184,7 @@ export default {
     deleteProfil() {
       Swal.fire({
         title: "Êtes-vous sûr ?",
-        text: "Vous me pourrez pas revenir en arrière !",
+        text: "Vous ne pourrez pas revenir en arrière !",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -243,6 +252,41 @@ export default {
               "Le profil n'a pas pu être mis à jour, veuillez réessayer plus tard !",
             showConfirmButton: false,
             timer: 2500,
+          });
+          console.log("An error occurred:", error.response);
+        });
+    },
+    changeAvatar(event) {
+      console.log(event);
+      const imgData = new FormData();
+      imgData.append("image", event.target.files[0]);
+      console.log(event.target.files[0]);
+      imgData.append("body", JSON.stringify({ userId: this.id }));
+      axios
+        .put(`http://localhost:3000/profil/${this.id}`, imgData, {
+          headers: {
+            Authorization: `Bearer ${store.state.token}`,
+          },
+        })
+        .then(() => {
+          axios
+            .get(`http://localhost:3000/profil/${this.id}`, {
+              headers: {
+                Authorization: `Bearer ${store.state.token}`,
+              },
+            })
+            .then((user) => {
+              this.user = user.data;
+              this.changedBio = user.data.bio;
+            });
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title:
+              "Votre photo n'a pas pu être mise à jour, veuillez réessayer plus tard !",
+            showConfirmButton: false,
+            timer: 1500,
           });
           console.log("An error occurred:", error.response);
         });

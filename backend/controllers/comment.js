@@ -21,7 +21,9 @@ exports.allComments = (req, res, next) => {
     ],
     order: [["createdAt", "ASC"]],
   })
-    .then((comments) => res.status(200).json({ comments }))
+    .then((comments) => {
+      res.status(200).json({ comments });
+    })
     .catch((error) =>
       res
         .status(500)
@@ -30,7 +32,6 @@ exports.allComments = (req, res, next) => {
 };
 
 exports.postComment = (req, res, next) => {
-  console.log("test");
   models.Comment.create({
     include: [
       {
@@ -69,13 +70,18 @@ exports.updateComment = (req, res, next) => {
               getUserId(req) == commentFound.userId ||
               userIsAdmin.dataValues.isAdmin == true
             ) {
-              models.Comment.update(req.body, {
+              const updateData = {
+                comment: req.body.comment,
+                updatedAt: Date.now(),
+              };
+              models.Comment.update(updateData, {
                 attributes: ["comment"],
                 where: { commentId: req.params.commentId },
               })
-                .then(() =>
-                  res.status(201).json({ message: "Commentaire modifié" })
-                )
+                .then(() => {
+                  console.log("testSEb");
+                  res.status(201).json({ message: "Commentaire modifié" });
+                })
                 .catch((error) => res.status(500).json({ error }));
             } else {
               res.status(401).json({
