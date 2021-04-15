@@ -156,7 +156,7 @@
                           counter
                           clearable
                           placeholder="Votre commentaire"
-                          v-model="comment"
+                          v-model="com"
                         ></v-textarea>
 
                         <small class="grey--text"
@@ -266,7 +266,7 @@
                     auto-grow
                     counter
                     clearable
-                    v-model="comment.comment"
+                    v-model="com"
                   ></v-textarea>
 
                   <small class="grey--text"
@@ -281,7 +281,7 @@
                   <v-btn
                     text
                     color="primary"
-                    @click="(dialog3 = false), updateComment(comment.commentId)"
+                    @click="(dialog3 = false), updateComment(comment)"
                     >Modifier</v-btn
                   >
                 </v-card-actions>
@@ -330,7 +330,7 @@ export default {
   data() {
     return {
       message: [],
-      comment: "",
+      com: "",
       allComments: [],
       dialog: false,
       dialog2: false,
@@ -347,7 +347,7 @@ export default {
         .post(
           `http://localhost:3000/message/${this.id}/comment`,
           {
-            comment: this.comment,
+            comment: this.com,
             userId: store.state.userId,
           },
           {
@@ -356,17 +356,16 @@ export default {
             },
           }
         )
-        .then((comment) => {
-          console.log(comment);
-          this.allComments = [];
-          this.comment = "";
-
+        .then(() => {
           Swal.fire({
             icon: "success",
             title: "Commentaire posté",
             showConfirmButton: false,
             timer: 1000,
           });
+          this.allComments = [];
+          this.com = "";
+
           axios
             .get(`http://localhost:3000/message/${this.id}/comment`, {
               headers: {
@@ -375,7 +374,7 @@ export default {
             })
             .then((response) => {
               console.log(response);
-              for (const comment of response.data.comments) {
+              for (let comment of response.data.comments) {
                 this.allComments.push(comment);
               }
             });
@@ -516,12 +515,12 @@ export default {
             },
           }
         )
-        .then((message) => {
-          console.log(message);
+        .then(() => {
           Swal.fire({
             icon: "success",
             title: "Message modifié",
-            showConfirmButton: true,
+            showConfirmButton: false,
+            timer: 1000,
           });
         })
         .catch((error) => {
@@ -529,7 +528,7 @@ export default {
           Swal.fire({
             icon: "error",
             title:
-              "Le messagen'a pas pu être modifié, veuillez réessayer plus tard !",
+              "Le message n'a pas pu être modifié, veuillez réessayer plus tard !",
             showConfirmButton: true,
           });
           console.log("An error occurred:", error.response);
@@ -595,14 +594,15 @@ export default {
           console.log("An error occurred:", error.response);
         });
     },
-    updateComment(commentId) {
-      console.log(" notre test " + commentId);
+    updateComment(comment) {
+      console.log(" notre test " + comment.commentId);
       console.log(this.id);
       axios
         .put(
-          `http://localhost:3000/comment/${commentId}`,
+          `http://localhost:3000/message/${this.id}/comment/${comment.commentId}`,
           {
-            comment: this.comment.comment,
+            comment: this.com,
+            userId: store.state.userId,
           },
           {
             headers: {
@@ -610,13 +610,28 @@ export default {
             },
           }
         )
-        .then((comment) => {
-          console.log(comment);
+        .then(() => {
           Swal.fire({
             icon: "success",
             title: "Commentaire modifié",
             showConfirmButton: true,
           });
+          this.allComments = [];
+          this.com = "";
+
+          axios
+            .get(`http://localhost:3000/message/${this.id}/comment`, {
+              headers: {
+                Authorization: `Bearer ${store.state.token}`,
+              },
+            })
+            .then((response) => {
+              console.log(response);
+              for (let comment of response.data.comments) {
+                console.log("testupadate");
+                this.allComments.push(comment);
+              }
+            });
         })
         .catch((error) => {
           Swal.fire({

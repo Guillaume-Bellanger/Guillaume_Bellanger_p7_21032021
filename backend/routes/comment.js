@@ -6,7 +6,11 @@ const commentCtrl = require("../controllers/comment");
 
 router.get("/message/:msgId/comment", commentCtrl.allComments);
 router.post("/message/:msgId/comment", commentCtrl.postComment);
-router.put("/comment/:commentId", auth, commentCtrl.updateComment);
+router.put(
+  "/message/:msgId/comment/:commentId",
+  auth,
+  commentCtrl.updateComment
+);
 router.delete(
   "/message/:msgId/comment/:commentId",
   auth,
