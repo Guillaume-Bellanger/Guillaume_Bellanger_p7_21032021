@@ -15,9 +15,10 @@
                 @change="changeAvatar"
                 type="file"
                 nome="imgProfil"
+                ref="inputFile"
               />
               <v-btn
-                class="mx-auto mt-3"
+                class="mx-8 mt-3"
                 color="#33A8FF"
                 v-if="isAdmin"
                 @click="changeAvatar()"
@@ -26,7 +27,7 @@
               </v-btn>
 
               <v-btn
-                class="mx-auto mt-3"
+                class="mx-8 mt-3"
                 small
                 color="#33A8FF"
                 v-else-if="id == userId"
@@ -257,10 +258,10 @@ export default {
         });
     },
     changeAvatar(event) {
-      console.log(event);
+      this.$refs.inputFile.click();
       const imgData = new FormData();
       imgData.append("image", event.target.files[0]);
-      console.log(event.target.files[0]);
+
       imgData.append("body", JSON.stringify({ userId: this.id }));
       axios
         .put(`http://localhost:3000/profil/${this.id}`, imgData, {
@@ -300,5 +301,8 @@ export default {
 }
 .container {
   max-width: 1950px;
+}
+input {
+  visibility: hidden;
 }
 </style>
