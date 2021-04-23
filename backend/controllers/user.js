@@ -131,6 +131,7 @@ exports.viewProfil = (req, res, next) => {
 };
 
 exports.editProfil = (req, res, next) => {
+  console.log(req.body);
   //ternaire verif si req.file si oui oon ajout l'objet body.user et la clef avatar correspond a l'url de l'image
   //sinon user objet est = objet body
   const userObject = req.file
@@ -139,7 +140,7 @@ exports.editProfil = (req, res, next) => {
           req.file.filename
         }`,
       }
-    : { ...req.body };
+    : JSON.parse(req.body.body);
 
   models.User.findOne({
     // cherche un utilisdateur dont l'id est celui founris en paramattre
@@ -160,11 +161,14 @@ exports.editProfil = (req, res, next) => {
           where: { userId: req.params.userId },
         })
           .then(() => {
-            const supImg = userFound.avatar.split("/")[4];
-
-            fs.unlink("images/" + supImg, () => {
-              res.status(200).json({ message: "Profil mis à jour" });
-            });
+            //
+            if (userObject.avatar) {
+              const supImg = userFound.avatar.split("/")[4];
+              if (supImg != "avatar-default.png") {
+                fs.unlink("images/" + supImg, () => {});
+              }
+            }
+            res.status(200).json({ message: "Profil mis à jour" });
           })
           .catch((error) => res.status(500).json({ error }));
       } else {

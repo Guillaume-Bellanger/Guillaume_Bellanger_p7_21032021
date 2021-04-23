@@ -6,35 +6,21 @@
           <v-card-text align="center" dark>
             <v-list-item>
               <v-avatar size="150" class="mx-auto">
-                <v-img :src="user.avatar"></v-img>
+                <v-img :src="imgProfil" v-if="imgProfil != ''"></v-img>
+                <v-img :src="user.avatar" v-else></v-img>
               </v-avatar>
             </v-list-item>
             <v-list-item>
               <input
                 id="imgProfil"
-                @change="changeAvatar"
                 type="file"
                 nome="imgProfil"
                 ref="inputFile"
+                @change="imgHandler"
               />
-              <v-btn
-                class="mx-8 mt-3"
-                color="#33A8FF"
-                v-if="isAdmin"
-                @click="changeAvatar()"
+              <v-btn class="mx-8 mt-3" color="#33A8FF" @click="changeAvatar"
                 >Changer d'avatar
                 <v-icon>mdi-system-update-alt</v-icon>
-              </v-btn>
-
-              <v-btn
-                class="mx-8 mt-3"
-                small
-                color="#33A8FF"
-                v-else-if="id == userId"
-                @click="changeAvatar()"
-                >Changer d'avatar
-
-                <v-icon>mdi-upload</v-icon>
               </v-btn>
             </v-list-item>
             <v-list-item>
@@ -161,6 +147,7 @@ export default {
       changingBio: false,
       changedBio: "",
       imgProfil: "",
+      imgFile: "",
     };
   },
   mounted() {
@@ -222,13 +209,14 @@ export default {
         });
     },
     updateProfil() {
+      const updateData = new FormData();
+      updateData.append("body", JSON.stringify({ bio: this.changedBio }));
+      updateData.append("image", this.imgFile);
       axios
         .put(
           `http://localhost:3000/profil/${this.id}`,
-          {
-            bio: this.changedBio,
-            avatar: this.changedAvatar,
-          },
+
+          updateData,
           {
             headers: {
               Authorization: `Bearer ${store.state.token}`,
@@ -257,40 +245,15 @@ export default {
           console.log("An error occurred:", error.response);
         });
     },
-    changeAvatar(event) {
-      this.$refs.inputFile.click();
-      const imgData = new FormData();
-      imgData.append("image", event.target.files[0]);
+    imgHandler(event) {
+      //met a jour l'image du fichier
+      this.imgFile = event.target.files[0];
 
-      imgData.append("body", JSON.stringify({ userId: this.id }));
-      axios
-        .put(`http://localhost:3000/profil/${this.id}`, imgData, {
-          headers: {
-            Authorization: `Bearer ${store.state.token}`,
-          },
-        })
-        .then(() => {
-          axios
-            .get(`http://localhost:3000/profil/${this.id}`, {
-              headers: {
-                Authorization: `Bearer ${store.state.token}`,
-              },
-            })
-            .then((user) => {
-              this.user = user.data;
-              this.changedBio = user.data.bio;
-            });
-        })
-        .catch((error) => {
-          Swal.fire({
-            icon: "error",
-            title:
-              "Votre photo n'a pas pu être mise à jour, veuillez réessayer plus tard !",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          console.log("An error occurred:", error.response);
-        });
+      this.imgProfil = URL.createObjectURL(event.target.files[0]);
+      console.log(this.imgProfil);
+    },
+    changeAvatar() {
+      this.$refs.inputFile.click();
     },
   },
 };
