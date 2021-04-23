@@ -4,7 +4,7 @@ const auth = require("../middleware/auth");
 
 const msgCtrl = require("../controllers/message");
 
-router.get("/message", auth, msgCtrl.allMessages);
+router.get("/message/:range/:factor", auth, msgCtrl.allMessages);
 router.post("/message", auth, msgCtrl.createMessage);
 router.get("/message/:msgId", auth, msgCtrl.viewMessage);
 router.put("/message/:msgId", auth, msgCtrl.editMessage);

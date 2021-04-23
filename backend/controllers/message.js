@@ -12,10 +12,20 @@ const getUserId = (req) => {
 exports.allMessages = (req, res, next) => {
   models.Message.findAll({
     attributes: ["content", "createdAt", "msgId", "userId"],
+    limit: parseInt(req.params.factor),
+    offset: parseInt(req.params.range),
     include: [
       {
         model: models.User,
         attributes: ["name", "userId", "avatar"],
+      },
+      {
+        model: models.Comment,
+        attributes: ["comment"],
+      },
+      {
+        model: models.Like,
+        attributes: ["userId"],
       },
     ],
     order: [["createdAt", "DESC"]],
