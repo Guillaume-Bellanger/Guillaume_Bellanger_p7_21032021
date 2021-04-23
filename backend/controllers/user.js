@@ -32,15 +32,18 @@ const getUserId = (req) => {
 exports.signup = (req, res, next) => {
   if (!mailValidator.validate(req.body.email)) {
     // Si l'email n'est pas valide
+
     res.status(401).json({
       message: "Merci de bien vouloir entrer une adresse email valide !",
     }); // Ajouter une alert
+    return false;
   }
   if (req.body.name.length >= 15 || req.body.name.length <= 4) {
     // Si un pseudo est bien renseigné
     res.status(401).json({
       message: "Merci de renseigner un pseudo entre 5 et 14 caractères !",
     });
+    return false;
   }
   if (!schema.validate(req.body.password)) {
     // Si le password n'est pas valide
@@ -48,6 +51,7 @@ exports.signup = (req, res, next) => {
       message:
         "Veuillez choisir un mot de passe fort, entre 8 et 40 caractères contenant au moins un caractère majuscule et un minuscule, 2 chiffres et sans espaces.",
     });
+    return false;
   }
   models.User.findOne({
     attributes: ["email"],
@@ -74,7 +78,7 @@ exports.signup = (req, res, next) => {
               .catch((error) => res.status(400).json({ error }));
           });
       } else {
-        return res.status(409).json({ error: "L 'utilisateur existe déjà" });
+        throw { error: "L 'utilisateur existe déjà" };
       }
     })
     .catch((error) => res.status(500).json({ error }));
@@ -131,11 +135,11 @@ exports.viewProfil = (req, res, next) => {
 };
 
 exports.editProfil = (req, res, next) => {
-  console.log(req.body);
   //ternaire verif si req.file si oui oon ajout l'objet body.user et la clef avatar correspond a l'url de l'image
-  //sinon user objet est = objet body
+  //sinon
   const userObject = req.file
     ? {
+        ...JSON.parse(req.body.body),
         avatar: `${req.protocol}://${req.get("host")}/images/${
           req.file.filename
         }`,
@@ -156,6 +160,7 @@ exports.editProfil = (req, res, next) => {
         userFound &&
         (userFound.isAdmin == true || userFound.userId == getUserId(req))
       ) {
+        console.log(userObject);
         models.User.update(userObject, {
           attributes: ["bio", "avatar"],
           where: { userId: req.params.userId },
