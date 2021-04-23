@@ -1,42 +1,39 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: true,
-  plugins: [
-    createPersistedState()
-  ],
+  plugins: [createPersistedState()],
   state: {
     token: null,
     userId: null,
     isUserLoggedIn: false,
-    isAdmin: false
+    isAdmin: false,
   },
   mutations: {
-    setToken (state, token) {
-      state.token = token
-      state.isUserLoggedIn = !!(token)
+    setToken(state, token) {
+      state.token = token;
+      state.isUserLoggedIn = !!token;
     },
-    setUser (state, user) {
-      state.userId = user
+    setUser(state, user) {
+      state.userId = user;
     },
-    setAdmin (state, admin) {
-      state.isAdmin = admin
-    }
+    setAdmin(state, admin) {
+      state.isAdmin = admin;
+    },
   },
   actions: {
-    setToken ({commit}, token) {
-      commit('setToken', token)
+    setToken({ commit }, token) {
+      commit("setToken", token);
     },
-    setUser ({commit}, user) {
-      commit('setUser', user)
+    setUser({ commit }, user) {
+      commit("setUser", user);
     },
-    setAdmin ({commit}, admin) {
-      commit('setAdmin', admin)
-    }
-
-  }
-})
+    setAdmin({ commit }, admin) {
+      commit("setAdmin", admin);
+    },
+  },
+});
