@@ -98,6 +98,7 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-pagination :length="10" @input="paginationEvent"></v-pagination>
   </div>
 </template>
 
@@ -118,8 +119,11 @@ export default {
       totalLikes: [],
       totalComments: [],
       messagesId: [],
+      currentPage: 1,
+      paginationFactor: 10,
     };
   },
+  watch: {},
   methods: {
     postMessage() {
       axios
@@ -149,62 +153,75 @@ export default {
           console.log("An error occurred:", error.response);
         });
     },
+    getPosts() {
+      //range est la variable de position des messages dans la BDD, currentPage est le numero de la page actuel
+      //paginationFactor est le nombre d'article affiché par page
+      let range = (this.currentPage - 1) * this.paginationFactor;
+
+      axios
+        .get(
+          `http://localhost:3000/message/${range}/${this.paginationFactor}`,
+          {
+            headers: {
+              Authorization: `Bearer ${store.state.token}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.allMessages = response.data.messages;
+
+          this.allMessages.forEach((message) => {
+            this.messagesId.push(message.msgId);
+          });
+          for (let i = 0; i < this.messagesId.length; i++) {
+            /*axios
+              .get(`http://localhost:3000/message/${this.messagesId[i]}/like`, {
+                headers: {
+                  Authorization: `Bearer ${store.state.token}`,
+                },
+              })
+              .then((response) => {
+                this.totalLikes.push(response.data.likes.count);
+
+                this.usersLiked.push(response.data.likes.rows);
+              })
+              .then(() => {
+                axios
+                  .get(
+                    `http://localhost:3000/message/${this.messagesId[i]}/comment`,
+                    {
+                      headers: {
+                        Authorization: `Bearer ${store.state.token}`,
+                      },
+                    }
+                  )
+                  .then((response) => {
+                    console.log(response);
+                    this.totalComments.push(response.data.comments.length);
+                  })
+                  .catch((error) => {
+                    console.log("An error occurred:", error.response);
+                  });
+              })
+              .catch((error) => {
+                console.log("An error occurred:", error.response);
+              });*/
+          }
+        })
+        .catch((error) => {
+          // erreur de manipulation.
+          console.log("An error occurred:", error.response);
+        });
+    },
+    paginationEvent(event) {
+      this.currentPage = parseInt(event);
+      this.allMessages = [];
+      this.messagesId = [];
+      this.getPosts();
+    },
   },
   mounted() {
-    axios
-      .get("http://localhost:3000/message", {
-        headers: {
-          Authorization: `Bearer ${store.state.token}`,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        for (const message of response.data.messages) {
-          this.allMessages.push(message);
-        }
-        this.allMessages.forEach((message) => {
-          this.messagesId.push(message.msgId);
-        });
-        for (let i = 0; i < this.messagesId.length; i++) {
-          axios
-            .get(`http://localhost:3000/message/${this.messagesId[i]}/like`, {
-              headers: {
-                Authorization: `Bearer ${store.state.token}`,
-              },
-            })
-            .then((response) => {
-              console.log(response);
-              this.totalLikes.push(response.data.likes.count);
-
-              this.usersLiked.push(response.data.likes.rows);
-            })
-            .then(() => {
-              axios
-                .get(
-                  `http://localhost:3000/message/${this.messagesId[i]}/comment`,
-                  {
-                    headers: {
-                      Authorization: `Bearer ${store.state.token}`,
-                    },
-                  }
-                )
-                .then((response) => {
-                  console.log(response);
-                  this.totalComments.push(response.data.comments.length);
-                })
-                .catch((error) => {
-                  console.log("An error occurred:", error.response);
-                });
-            })
-            .catch((error) => {
-              console.log("An error occurred:", error.response);
-            });
-        }
-      })
-      .catch((error) => {
-        // erreur de manipulation.
-        console.log("An error occurred:", error.response);
-      });
+    this.getPosts();
   },
 };
 </script>
