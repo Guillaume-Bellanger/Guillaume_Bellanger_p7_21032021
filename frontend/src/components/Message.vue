@@ -160,7 +160,7 @@ export default {
 
       axios
         .get(
-          `http://localhost:3000/message/${range}/${this.paginationFactor}`,
+          `http://localhost:3000/message/paginate/${range}/${this.paginationFactor}`,
           {
             headers: {
               Authorization: `Bearer ${store.state.token}`,
@@ -168,10 +168,14 @@ export default {
           }
         )
         .then((response) => {
-          this.allMessages = response.data.messages;
+          console.log(response);
+          this.allMessages = response.data.message;
 
           this.allMessages.forEach((message) => {
             this.messagesId.push(message.msgId);
+
+            //this.totalLikes
+            //this.totalComments
           });
           for (let i = 0; i < this.messagesId.length; i++) {
             /*axios

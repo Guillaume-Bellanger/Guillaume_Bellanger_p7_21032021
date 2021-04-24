@@ -1,4 +1,5 @@
 "use strict";
+const { query } = require("express");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Message extends Model {
@@ -25,5 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Message",
     }
   );
+
   return Message;
 };
