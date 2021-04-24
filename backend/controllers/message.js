@@ -1,5 +1,7 @@
 const models = require("../models");
 const jwt = require("jsonwebtoken");
+const { sequelize } = require("../models");
+const message = require("../models/message");
 require("dotenv").config();
 
 const getUserId = (req) => {
@@ -19,18 +21,23 @@ exports.allMessages = (req, res, next) => {
         model: models.User,
         attributes: ["name", "userId", "avatar"],
       },
-      {
-        model: models.Comment,
-        attributes: ["comment"],
-      },
-      {
-        model: models.Like,
-        attributes: ["userId"],
-      },
     ],
     order: [["createdAt", "DESC"]],
   })
-    .then((messages) => res.status(200).json({ messages }))
+    .then((messages) => {
+      const allPromises = messages.map((message) => {
+        return sequelize.query(
+          `SELECT msgId , COUNT(*) AS commentLength FROM comments WHERE msgId = ${message.msgId}`
+        );
+      });
+      console.log(allPromises);
+      Promise.all(allPromises)
+        .then((commentsArray) => {
+          res.status(200).json({ message: messages, comments: commentsArray });
+        })
+        .catch(() => res.status(500).json({ error: "Erreur allPromises" }));
+    })
+
     .catch(() =>
       res.status(400).json({
         error:
