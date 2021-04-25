@@ -26,14 +26,29 @@ exports.allMessages = (req, res, next) => {
   })
     .then((messages) => {
       const allPromises = messages.map((message) => {
-        return sequelize.query(
-          `SELECT msgId , COUNT(*) AS commentLength FROM comments WHERE msgId = ${message.msgId}`
-        );
+        return new Promise((resolv, reject) => {
+          models.Comment.findAndCountAll({ where: { msgId: message.msgId } })
+            .then((length) => {
+              models.Like.findAndCountAll({ where: { msgId: message.msgId } })
+                .then((likes) => {
+                  resolv({
+                    ...JSON.parse(JSON.stringify(message)),
+                    commentLength: length.count,
+                    likesLength: likes.count,
+                  });
+                })
+                .catch((error) => {
+                  reject(error);
+                });
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        });
       });
-      console.log(allPromises);
       Promise.all(allPromises)
-        .then((commentsArray) => {
-          res.status(200).json({ message: messages, comments: commentsArray });
+        .then((message) => {
+          res.status(200).json({ message });
         })
         .catch(() => res.status(500).json({ error: "Erreur allPromises" }));
     })
