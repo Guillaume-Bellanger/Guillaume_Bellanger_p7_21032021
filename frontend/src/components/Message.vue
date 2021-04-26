@@ -168,48 +168,13 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
           this.allMessages = response.data.message;
 
           this.allMessages.forEach((message) => {
             this.messagesId.push(message.msgId);
-
-            //this.totalLikes
-            //this.totalComments
           });
           for (let i = 0; i < this.messagesId.length; i++) {
-            /*axios
-              .get(`http://localhost:3000/message/${this.messagesId[i]}/like`, {
-                headers: {
-                  Authorization: `Bearer ${store.state.token}`,
-                },
-              })
-              .then((response) => {
-                this.totalLikes.push(response.data.likes.count);
-
-                this.usersLiked.push(response.data.likes.rows);
-              })
-              .then(() => {
-                axios
-                  .get(
-                    `http://localhost:3000/message/${this.messagesId[i]}/comment`,
-                    {
-                      headers: {
-                        Authorization: `Bearer ${store.state.token}`,
-                      },
-                    }
-                  )
-                  .then((response) => {
-                    console.log(response);
-                    this.totalComments.push(response.data.comments.length);
-                  })
-                  .catch((error) => {
-                    console.log("An error occurred:", error.response);
-                  });
-              })
-              .catch((error) => {
-                console.log("An error occurred:", error.response);
-              });*/
+            console.log(this.messageId.length);
           }
         })
         .catch((error) => {
