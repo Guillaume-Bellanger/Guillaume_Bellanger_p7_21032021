@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { sequelize } = require("../models");
 const message = require("../models/message");
 require("dotenv").config();
+const Op = sequelize.Sequelize.Op;
 
 const getUserId = (req) => {
   const token = req.headers.authorization.split(" ")[1];
@@ -12,8 +13,21 @@ const getUserId = (req) => {
 };
 
 exports.allMessages = (req, res, next) => {
+  const search = req.query.search;
+  let condition = search
+    ? {
+        [Op.or]: [
+          {
+            content: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+        ],
+      }
+    : null;
   models.Message.findAll({
     attributes: ["content", "createdAt", "msgId", "userId"],
+    where: condition,
     limit: parseInt(req.params.factor),
     offset: parseInt(req.params.range),
     include: [
