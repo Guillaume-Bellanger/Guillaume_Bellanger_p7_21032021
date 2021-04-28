@@ -83,7 +83,7 @@
                   </v-btn>
                 </router-link>
                 <span class="subheading mr-2 mt-1">{{
-                  totalLikes[index]
+                  message.likesLength
                 }}</span>
                 <span class="mr-3">·</span>
                 <router-link :to="`/message/${message.msgId}`">
@@ -91,7 +91,7 @@
                     <v-icon class="mr-1">mdi-chat-plus</v-icon>
                   </v-btn>
                 </router-link>
-                <span class="subheading">{{ totalComments[index] }}</span>
+                <span class="subheading">{{ message.commentLength }}</span>
               </v-list-item>
             </v-card-actions>
           </v-card>
@@ -157,17 +157,23 @@ export default {
       //range est la variable de position des messages dans la BDD, currentPage est le numero de la page actuel
       //paginationFactor est le nombre d'article affiché par page
       let range = (this.currentPage - 1) * this.paginationFactor;
+      const urlSearch = new URLSearchParams(window.location.search);
+
+      let search = urlSearch.get("search");
+      if (search === null) search = "";
 
       axios
         .get(
-          `http://localhost:3000/message/paginate/${range}/${this.paginationFactor}`,
+          `http://localhost:3000/message/paginate/${range}/${this.paginationFactor}?search=${search}`,
           {
             headers: {
               Authorization: `Bearer ${store.state.token}`,
             },
           }
         )
+
         .then((response) => {
+          console.log(response);
           this.allMessages = response.data.message;
 
           this.allMessages.forEach((message) => {

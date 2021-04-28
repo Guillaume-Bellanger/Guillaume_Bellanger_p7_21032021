@@ -18,7 +18,7 @@
         </template>
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>GROUPOMANIA</v-toolbar-title>
+        <v-toolbar-title>GROUPOMANIA </v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-col cols="4" sm="3" md="2">
@@ -27,6 +27,8 @@
             prepend-icon="mdi-magnify"
             single-line
             value
+            v-model="search"
+            @change="list()"
           ></v-text-field>
         </v-col>
       </v-app-bar>
@@ -97,6 +99,7 @@ export default {
     drawer: false,
     dialog: false,
     content: "",
+    search: "",
   }),
   methods: {
     logout() {
@@ -125,6 +128,9 @@ export default {
       } else {
         this.$router.push(`/profil/${this.$store.state.userId}`);
       }
+    },
+    list() {
+      this.$router.push("/message?search=" + this.search);
     },
   },
 };
