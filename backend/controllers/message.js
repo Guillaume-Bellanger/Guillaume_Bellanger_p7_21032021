@@ -13,21 +13,9 @@ const getUserId = (req) => {
 };
 
 exports.allMessages = (req, res, next) => {
-  const search = req.query.search;
-  let condition = search
-    ? {
-        [Op.or]: [
-          {
-            content: {
-              [Op.like]: `%${search}%`,
-            },
-          },
-        ],
-      }
-    : null;
   models.Message.findAll({
     attributes: ["content", "createdAt", "msgId", "userId"],
-    where: condition,
+
     limit: parseInt(req.params.factor),
     offset: parseInt(req.params.range),
     include: [
