@@ -35,7 +35,7 @@ exports.signup = (req, res, next) => {
 
     res.status(401).json({
       message: "Merci de bien vouloir entrer une adresse email valide !",
-    }); // Ajouter une alert
+    });
     return false;
   }
   if (req.body.name.length >= 15 || req.body.name.length <= 4) {
@@ -135,7 +135,7 @@ exports.viewProfil = (req, res, next) => {
 };
 
 exports.editProfil = (req, res, next) => {
-  //ternaire verif si req.file si oui oon ajout l'objet body.user et la clef avatar correspond a l'url de l'image
+  //ternaire verif si req.file si oui on ajoute l'objet body.user et la clef avatar correspond a l'url de l'image
   //sinon
   const userObject = req.file
     ? {
@@ -147,14 +147,14 @@ exports.editProfil = (req, res, next) => {
     : JSON.parse(req.body.body);
 
   models.User.findOne({
-    // cherche un utilisdateur dont l'id est celui founris en paramattre
+    // cherche un utilisateur dont l'id est celui fournis en paramettre
     attributes: ["isAdmin", "userId", "avatar"],
     where: { userId: req.params.userId },
   })
     .then((userFound) => {
       // quand l'utilisateur est trouvé
       //quand l'utilisateur est trouvé on verifis qu'il est proprietaire du profil ou administrateur
-      //si c'est le cas on maj le profil sinon on renvoie une erreur
+      //si c'est le cas on maj le profil sinon on renvoi une erreur
 
       if (
         userFound &&

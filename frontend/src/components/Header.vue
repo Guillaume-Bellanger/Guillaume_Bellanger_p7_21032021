@@ -127,9 +127,7 @@ export default {
         this.$router.push(`/profil/${this.$store.state.userId}`);
       }
     },
-    /*list() {
-      this.$router.push("/message?search=" + this.search);
-    },*/
+
     searchHandler() {
       this.$router.push("/message?search=" + this.search);
       window.location.reload();
