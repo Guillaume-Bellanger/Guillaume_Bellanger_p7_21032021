@@ -7,7 +7,6 @@
         color="#33A8FF"
         shrink-on-scroll
         prominent
-        src="https://ibb.co/VMF87KZ"
         fade-img-on-scroll
       >
         <template v-slot:img="{ props }">
@@ -27,8 +26,8 @@
             prepend-icon="mdi-magnify"
             single-line
             value
+            v-on:change="searchHandler"
             v-model="search"
-            @change="list()"
           ></v-text-field>
         </v-col>
       </v-app-bar>
@@ -118,9 +117,8 @@ export default {
       this.$router.push("/");
     },
     message() {
-      if (this.$route.path == `/message`) {
-        window.location.reload();
-      } else this.$router.push("/message");
+      this.$router.push("/message");
+      window.location.reload();
     },
     profil() {
       if (this.$route.path == `/profil/${this.$store.state.userId}`) {
@@ -129,8 +127,12 @@ export default {
         this.$router.push(`/profil/${this.$store.state.userId}`);
       }
     },
-    list() {
+    /*list() {
       this.$router.push("/message?search=" + this.search);
+    },*/
+    searchHandler() {
+      this.$router.push("/message?search=" + this.search);
+      window.location.reload();
     },
   },
 };

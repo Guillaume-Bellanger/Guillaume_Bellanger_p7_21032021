@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 
 const userRoutes = require("./routes/user");
 const msgRoutes = require("./routes/message");
+const searchRoutes = require("./routes/find");
 
 const commentRoutes = require("./routes/comment");
 const path = require("path"); //Plugin permettant d'accéder au path du serveur
@@ -42,9 +43,9 @@ app.use(bodyParser.json()); // Récupération des données en objet JS dans le c
 app.use("/images", express.static(path.join(__dirname, "images"))); //middleware spécifique qui permet de servir le dossier image lors d'une requête spécifique avec l'image
 
 //routes API
+app.use("/", searchRoutes);
 app.use("/", userRoutes);
 app.use("/", msgRoutes);
 app.use("/", commentRoutes);
-//app.use("/", likeRoutes);
 
 module.exports = app;

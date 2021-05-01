@@ -59,7 +59,6 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          console.log(response);
           this.$store.dispatch("setToken", response.data.token);
           this.$store.dispatch("setUser", response.data.userId);
           this.$store.dispatch("setAdmin", response.data.isAdmin);

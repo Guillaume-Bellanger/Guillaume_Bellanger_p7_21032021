@@ -1,5 +1,5 @@
 <template>
-  <v-footer fixed bottom>
+  <v-footer id="footer">
     <v-spacer></v-spacer>
     <div>&copy; {{ today }}</div>
   </v-footer>
@@ -21,4 +21,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#footer {
+  margin-top: auto;
+}
+</style>

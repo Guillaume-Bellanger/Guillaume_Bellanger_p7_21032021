@@ -53,7 +53,6 @@ exports.postComment = (req, res, next) => {
 };
 
 exports.updateComment = (req, res, next) => {
-  console.log("testupd");
   models.Comment.findOne({
     attributes: ["userId", "commentId", "msgId"],
     where: { commentId: req.params.commentId },
@@ -79,7 +78,6 @@ exports.updateComment = (req, res, next) => {
                 where: { commentId: req.params.commentId },
               })
                 .then(() => {
-                  console.log("testSEb");
                   res.status(201).json({ message: "Commentaire modifié" });
                 })
                 .catch((error) => res.status(500).json({ error }));

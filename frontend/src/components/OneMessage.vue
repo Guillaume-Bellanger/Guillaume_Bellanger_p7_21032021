@@ -14,7 +14,7 @@
       <v-row align="center" justify="center">
         <v-col cols="12" sm="12" md="8">
           <v-speed-dial
-            v-model="fab"
+            v-model="fabMaster"
             absolute
             right
             direction="left"
@@ -24,13 +24,13 @@
             <template v-slot:activator>
               <v-btn
                 class="mt-2 mr-1"
-                v-model="fab"
+                v-model="fabMaster"
                 color="black"
                 dark
                 fab
                 small
               >
-                <v-icon v-if="fab">
+                <v-icon v-if="fabMaster">
                   mdi-close
                 </v-icon>
                 <v-icon v-else>
@@ -46,7 +46,7 @@
             </v-btn>
           </v-speed-dial>
           <v-speed-dial
-            v-model="fab"
+            v-model="fabMaster"
             absolute
             top
             right
@@ -55,8 +55,8 @@
             v-else-if="id == userId"
           >
             <template v-slot:activator>
-              <v-btn v-model="fab" color="blue darken-2" dark fab x-small>
-                <v-icon v-if="fab">
+              <v-btn v-model="fabMaster" color="blue darken-2" dark fab x-small>
+                <v-icon v-if="fabMaster">
                   mdi-close
                 </v-icon>
                 <v-icon v-else>
@@ -101,7 +101,11 @@
             </v-card>
           </v-dialog>
 
-          <v-card class="elevation-12" color="#26c6da">
+          <v-card
+            v-if="message.User != undefined"
+            class="elevation-12"
+            color="#26c6da"
+          >
             <v-card-title>
               <v-list-item>
                 <router-link :to="`/profil/${message.userId}`">
@@ -196,7 +200,7 @@
             v-for="(comment, index) in allComments"
           >
             <v-speed-dial
-              v-model="fab"
+              v-model="fabDotted"
               absolute
               right
               top
@@ -205,8 +209,8 @@
               v-if="isAdmin"
             >
               <template v-slot:activator>
-                <v-btn v-model="fab" fab icon x-small>
-                  <v-icon v-if="fab">
+                <v-btn v-model="fabDotted" fab icon x-small>
+                  <v-icon v-if="fabDotted">
                     mdi-close
                   </v-icon>
                   <v-icon v-else>
@@ -228,7 +232,7 @@
               </v-btn>
             </v-speed-dial>
             <v-speed-dial
-              v-model="fab"
+              v-model="fabDotted"
               absolute
               right
               top
@@ -237,8 +241,8 @@
               v-else-if="comment.userId == userId"
             >
               <template v-slot:activator>
-                <v-btn v-model="fab" fab icon x-small>
-                  <v-icon v-if="fab">
+                <v-btn v-model="fabDotted" fab icon x-small>
+                  <v-icon v-if="fabDotted">
                     mdi-close
                   </v-icon>
                   <v-icon v-else>
@@ -339,6 +343,8 @@ export default {
       usersLiked: [],
       userLikeSearch: false,
       totalLikes: "",
+      fabMaster: false,
+      fabDotted: false,
     };
   },
   methods: {
@@ -406,7 +412,6 @@ export default {
               },
             })
             .then((response) => {
-              console.log(response);
               this.totalLikes = response.data.likes.count;
               response.data.likes.rows.forEach((rows) => {
                 this.usersLiked.push(rows.userId);
@@ -441,7 +446,6 @@ export default {
               },
             })
             .then((response) => {
-              console.log(response);
               this.totalLikes = response.data.likes.count;
 
               response.data.likes.rows.forEach((rows) => {
@@ -572,7 +576,6 @@ export default {
                     },
                   })
                   .then((response) => {
-                    console.log(response);
                     for (const comment of response.data.comments) {
                       this.allComments.push(comment);
                     }
@@ -595,8 +598,6 @@ export default {
         });
     },
     updateComment(comment) {
-      console.log(" notre test " + comment.commentId);
-      console.log(this.id);
       axios
         .put(
           `http://localhost:3000/message/${this.id}/comment/${comment.commentId}`,
@@ -626,9 +627,7 @@ export default {
               },
             })
             .then((response) => {
-              console.log(response);
               for (let comment of response.data.comments) {
-                console.log("testupadate");
                 this.allComments.push(comment);
               }
             });
@@ -656,7 +655,6 @@ export default {
         },
       })
       .then((message) => {
-        console.log(message.data);
         this.message = message.data.message;
       })
       .then(() => {
@@ -667,7 +665,6 @@ export default {
             },
           })
           .then((response) => {
-            console.log(response);
             for (const comment of response.data.comments) {
               this.allComments.push(comment);
             }
@@ -684,7 +681,6 @@ export default {
             },
           })
           .then((response) => {
-            console.log(response);
             this.totalLikes = response.data.likes.count;
             response.data.likes.rows.forEach((rows) => {
               this.usersLiked.push(rows.userId);

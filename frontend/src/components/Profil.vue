@@ -18,7 +18,10 @@
                 ref="inputFile"
                 @change="imgHandler"
               />
-              <v-btn class="mx-8 mt-3" color="#33A8FF" @click="changeAvatar"
+              <v-btn
+                class="mx-8 mt-3  changeAvatar"
+                color="#33A8FF"
+                @click="changeAvatar"
                 >Changer d'avatar
                 <v-icon>mdi-system-update-alt</v-icon>
               </v-btn>
@@ -231,7 +234,6 @@ export default {
             showConfirmButton: false,
             timer: 2500,
           });
-          this.$router.push(`/profil/${this.id}`);
         })
         .catch((error) => {
           // Handle error.
@@ -267,5 +269,9 @@ export default {
 }
 input {
   visibility: hidden;
+  z-index: -9999;
+}
+.changeAvatar {
+  position: absolute;
 }
 </style>
