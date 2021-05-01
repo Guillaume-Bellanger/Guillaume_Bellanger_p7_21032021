@@ -1,11 +1,11 @@
 <template>
-  <v-container light-blue fill-height class="mb-4 mt-5">
-    <v-row justify="center">
-      <v-col cols="12" sm="12" md="8">
+  <v-container light-blue fill-height class=" mt-5 test">
+    <v-row class="row" justify="center">
+      <v-col class=" col-sm-12 col-md-8">
         <v-card id="app">
           <v-card-text align="center" dark>
-            <v-list-item>
-              <v-avatar size="150" class="mx-auto">
+            <v-list-item class="itemAvatar">
+              <v-avatar id="btnAvatar" size="150" class="mx-auto">
                 <v-img :src="imgProfil" v-if="imgProfil != ''"></v-img>
                 <v-img :src="user.avatar" v-else></v-img>
               </v-avatar>
@@ -19,7 +19,7 @@
                 @change="imgHandler"
               />
               <v-btn
-                class="mx-8 mt-3  changeAvatar"
+                class=" mt-5  changeAvatar"
                 color="#33A8FF"
                 @click="changeAvatar"
                 >Changer d'avatar
@@ -37,7 +37,7 @@
 
             <v-divider></v-divider>
 
-            <v-col cols="12" md="10" class="flex-column">
+            <v-col class="col-md-10 col-sm-12 flex-column">
               <v-list-item>
                 <v-list-item-title class="font-weight-bold mb-3"
                   >Description :</v-list-item-title
@@ -68,9 +68,7 @@
               </v-list-item>
 
               <v-col
-                cols="12"
-                md="10"
-                class="flex-column"
+                class="col-sm-12 col-md-10 flex-column"
                 v-if="changingBio == true"
               >
                 <v-textarea
@@ -104,27 +102,31 @@
             </v-col>
             <v-divider></v-divider>
           </v-card-text>
-          <v-card-actions justify="end" align="end">
+          <v-card-actions class="btnSupUp" justify="end" align="end">
             <v-btn
               color="error"
-              class="mb-3"
+              class="mb-3 mr-1 col-6 col-nd-4 col-lg-3"
               v-if="isAdmin"
               @click="deleteProfil()"
             >
-              <v-icon left dark>mdi-delete-forever</v-icon>
-              Supprimer le compte
+              <v-icon left dark class="logoSup">mdi-delete-forever</v-icon>
+              Supprimer
             </v-btn>
             <v-btn
               color="error"
-              class="mb-3"
+              class="mb-3 mr-1 col-6 col-nd-4 col-lg-3"
               v-else-if="id == userId"
               @click="deleteProfil()"
             >
               <v-icon left dark>mdi-delete-forever</v-icon>
-              Supprimer le compte
+              Supprimer
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn color="#33A8FF" class="mb-3" @click="updateProfil()">
+            <v-btn
+              color="#33A8FF"
+              class="mb-3  mr-1 col-6 col-nd-4 col-lg-3"
+              @click="updateProfil()"
+            >
               <v-icon left dark>mdi-checkbox-marked-circle</v-icon>
               Enregistrer
             </v-btn>
@@ -264,14 +266,18 @@ export default {
 #app {
   margin-top: 50px;
 }
-.container {
-  max-width: 1950px;
+.logoSup {
+  padding-right: 2px;
 }
 input {
-  visibility: hidden;
-  z-index: -9999;
+  display: none;
 }
 .changeAvatar {
-  position: absolute;
+  margin: 0 0 0 15%;
+}
+@media screen and (min-width: 604px) {
+  .changeAvatar {
+    margin: 0 0 0 36%;
+  }
 }
 </style>

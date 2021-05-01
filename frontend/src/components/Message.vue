@@ -3,10 +3,9 @@
     <div class="pad">
       <v-btn
         v-if="$store.state.isUserLoggedIn"
-        absolute
         dark
         fab
-        class="mt-6 pad"
+        class="mt-12 mb-12 pad newMsg"
         left
         color="#33A8FF"
         @click="dialog = !dialog"
@@ -44,11 +43,11 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-row v-if="search != null" class="msgSearch">
-        <p>
+      <v-row v-if="search != null">
+        <p class="msgResult">
           {{ searchResult }}
         </p>
-        <h2 v-if="allMessages.length > 0">
+        <h2 v-if="allMessages.length > 0" class="msgScript">
           messages :
         </h2>
       </v-row>
@@ -113,10 +112,10 @@
         </v-row>
       </v-container>
     </div>
-    <v-row v-if="allUsers.length > 0">
-      <h2>Users :</h2>
+    <v-row v-if="allUsers.length > 0" class="userContainer">
+      <h2 classe="usersScript">Users :</h2>
       <ul v-bind:key="index" v-for="(user, index) in allUsers">
-        <li>{{ user.name }}</li>
+        <li class="userResult">{{ user.name }}</li>
       </ul>
     </v-row>
     <v-pagination
@@ -269,13 +268,13 @@ export default {
 </script>
 
 <style scoped>
-.pad {
-  margin-top: 80px;
-  margin-bottom: auto;
-}
 #created {
   font-size: 12px;
 }
+.newMsg {
+  z-index: 6;
+}
+
 .v-divider {
   margin: 0;
 }
@@ -291,9 +290,30 @@ export default {
 .container {
   padding-bottom: 0 !important;
 }
-.msgSearch {
-  position: relative;
-  margin-top: 150px;
-  margin-left: 150px;
+.msgResult {
+  margin-left: 5%;
+}
+.msgScript {
+  margin-left: 15%;
+}
+
+.userContainer {
+  margin-top: 5%;
+
+  margin-left: 15%;
+}
+.userResult {
+  padding-top: 5%;
+  margin-left: 35%;
+}
+
+@media screen and (min-width: 604px) {
+  .msgScript {
+    line-height: 3;
+    margin-right: 50%;
+  }
+  .userContainer {
+    margin-left: 38%;
+  }
 }
 </style>

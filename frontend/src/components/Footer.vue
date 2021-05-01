@@ -23,6 +23,9 @@ export default {
 
 <style scoped>
 #footer {
-  margin-top: auto;
+  height: auto;
+  width: 100%;
+  position: absolute;
+  top: 100%;
 }
 </style>

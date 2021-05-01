@@ -4,7 +4,7 @@
       <v-row align="center" justify="center" class="mb-5">
         <v-col cols="12" sm="12" md="8">
           <router-link :to="`/message/`">
-            <v-btn outlined absolute left text color="#33A8FF">
+            <v-btn outlined absolute left text c>
               <v-icon class="mr-2">mdi-undo</v-icon>
               Retour aux messages
             </v-btn>
