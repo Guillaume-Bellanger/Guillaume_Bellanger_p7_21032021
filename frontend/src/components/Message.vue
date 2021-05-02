@@ -2,6 +2,8 @@
   <div>
     <div class="pad">
       <v-btn
+        aria-label=" bouton pour ajouter un message"
+        title="bouton pour ajouter un message"
         v-if="$store.state.isUserLoggedIn"
         dark
         fab
@@ -13,6 +15,8 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
       <v-dialog
+        aria-label=" lien qui s'affiche si l'utilisateur est connecté"
+        title="lien qui s'affiche si l'utilisateur est connecté"
         v-if="$store.state.isUserLoggedIn"
         v-model="dialog"
         max-width="500px"
@@ -37,13 +41,22 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn text color="primary" @click="(dialog = false), postMessage()"
+            <v-btn
+              text
+              color="primary"
+              @click="(dialog = false), postMessage()"
+              aria-label=" bouton pour poster le nouveau message"
+              title="bouton pour poster le nouveau message"
               >Envoyer</v-btn
             >
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-row v-if="search != null">
+      <v-row
+        v-if="search != null"
+        aria-label=" lien qui affiche les resultats de la recherche"
+        title="endroit oû s'affiche les resultats de la recherche  "
+      >
         <p class="msgResult">
           {{ searchResult }}
         </p>
@@ -52,12 +65,30 @@
         </h2>
       </v-row>
 
-      <v-container v-bind:key="index" v-for="(message, index) in allMessages">
+      <v-container
+        v-bind:key="index"
+        v-for="(message, index) in allMessages"
+        aria-label=" endroit oû les messages s'affichent"
+        title="endroit oû les messages s'affichent  "
+      >
         <v-row align="center" justify="center">
           <v-col cols="12" md="8" lg="8">
             <v-card class="elevation-12" color="#33A8FF">
-              <router-link :to="`/message/${message.msgId}`">
-                <v-btn fab x-small top right absolute class="mt-6">
+              <router-link
+                :to="`/message/${message.msgId}`"
+                aria-label="on affiche l'auteur du messsage"
+                title="on affiche l'auteur du message "
+              >
+                <v-btn
+                  fab
+                  x-small
+                  top
+                  right
+                  absolute
+                  class="mt-6"
+                  aria-label=" bouton pour afficher le message dans une autre fenetre"
+                  title="bouton pour afficher le message dans une autre fenetre"
+                >
                   <v-icon>
                     mdi-magnify
                   </v-icon>
@@ -67,14 +98,26 @@
                 <v-list-item>
                   <router-link :to="`/profil/${message.User.userId}`">
                     <v-list-item-avatar outlined color="grey darken-3">
-                      <v-img :src="message.User.avatar"></v-img>
+                      <v-img
+                        :src="message.User.avatar"
+                        aria-label=" l'avatar de l'auteur"
+                        title="l'avatar de l'auteur   "
+                      ></v-img>
                     </v-list-item-avatar>
                   </router-link>
                   <v-list-item-content>
-                    <v-list-item-title>{{
-                      message.User.name
-                    }}</v-list-item-title>
-                    <p id="created">{{ message.createdAt }}</p>
+                    <v-list-item-title
+                      aria-label=" le pseudo de l'auteur"
+                      title="le pseudo de l'auteur "
+                      >{{ message.User.name }}</v-list-item-title
+                    >
+                    <p
+                      id="created"
+                      aria-label=" date de publication"
+                      title="date de publication  "
+                    >
+                      {{ message.createdAt }}
+                    </p>
                   </v-list-item-content>
                 </v-list-item>
               </v-card-title>
@@ -82,6 +125,8 @@
               <v-card-text
                 v-on:search="getSearch()"
                 class="h5 text-center font-weight-bold"
+                aria-label=" contenu du message"
+                title="contenu du message "
               >
                 {{ message.content }}
               </v-card-text>
@@ -91,7 +136,12 @@
               <v-card-actions>
                 <v-list-item class="justify-end">
                   <router-link :to="`/message/${message.msgId}`">
-                    <v-btn icon color="red">
+                    <v-btn
+                      icon
+                      color="red"
+                      aria-label=" bouton du like qui renvoie sur le message "
+                      title="bouton du like renvoyant sur le message"
+                    >
                       <v-icon class="mr-1">mdi-thumb-up</v-icon>
                     </v-btn>
                   </router-link>
@@ -100,7 +150,12 @@
                   }}</span>
                   <span class="mr-3">·</span>
                   <router-link :to="`/message/${message.msgId}`">
-                    <v-btn icon color="black">
+                    <v-btn
+                      icon
+                      color="black"
+                      aria-label=" bouton des commentaires "
+                      title="bouton des commentaires"
+                    >
                       <v-icon class="mr-1">mdi-chat-plus</v-icon>
                     </v-btn>
                   </router-link>
