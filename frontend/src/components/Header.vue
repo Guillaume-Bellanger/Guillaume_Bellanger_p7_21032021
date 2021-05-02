@@ -26,6 +26,7 @@
             prepend-icon="mdi-magnify"
             single-line
             value
+            label="Votre recherche"
             v-on:change="searchHandler"
             v-model="search"
           ></v-text-field>

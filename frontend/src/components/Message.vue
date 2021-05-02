@@ -48,7 +48,7 @@
           {{ searchResult }}
         </p>
         <h2 v-if="allMessages.length > 0" class="msgScript">
-          messages :
+          Message(s) :
         </h2>
       </v-row>
 

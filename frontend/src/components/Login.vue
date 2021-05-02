@@ -31,7 +31,13 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" @click="login()">Se connecter</v-btn>
+            <v-btn
+              color="primary"
+              @click="login()"
+              aria-label=" bouton pour se connecterl"
+              title="bouton pour se connecter"
+              >Se connecter</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>

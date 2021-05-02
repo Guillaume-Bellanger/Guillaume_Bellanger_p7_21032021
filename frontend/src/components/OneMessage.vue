@@ -4,7 +4,7 @@
       <v-row align="center" justify="center" class="mb-5">
         <v-col cols="12" sm="12" md="8">
           <router-link :to="`/message/`">
-            <v-btn outlined absolute left text c>
+            <v-btn outlined absolute left text>
               <v-icon class="mr-2">mdi-undo</v-icon>
               Retour aux messages
             </v-btn>
@@ -23,6 +23,8 @@
           >
             <template v-slot:activator>
               <v-btn
+                aria-label="bouton pour afficher le menue dupression et modification"
+                title="Bouton menu des messages"
                 class="mt-2 mr-1"
                 v-model="fabMaster"
                 color="black"
@@ -38,25 +40,49 @@
                 </v-icon>
               </v-btn>
             </template>
-            <v-btn fab dark small color="green" @click="dialog = true">
+            <v-btn
+              fab
+              dark
+              small
+              color="green"
+              @click="dialog = true"
+              aria-label="bouton pour modifier le message"
+              title="bouton pour modifier le message"
+            >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
-            <v-btn fab dark small color="red" @click="deleteMessage()">
+            <v-btn
+              fab
+              dark
+              small
+              color="red"
+              @click="deleteMessage()"
+              aria-label="bouton de supression du message"
+              title="bouton de supression du message"
+            >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-speed-dial>
           <v-speed-dial
-            v-model="fabMaster"
+            v-model="fabUsers"
             absolute
             top
             right
             direction="left"
             transition="slide-x-reverse-transition"
-            v-else-if="id == userId"
+            v-if="id == userId"
           >
             <template v-slot:activator>
-              <v-btn v-model="fabMaster" color="blue darken-2" dark fab x-small>
-                <v-icon v-if="fabMaster">
+              <v-btn
+                v-model="fabUsers"
+                color="blue darken-2"
+                dark
+                fab
+                x-small
+                aria-label="bouton pour afficher le menu"
+                title="bouton pour afficher le menu"
+              >
+                <v-icon v-if="fabUsers">
                   mdi-close
                 </v-icon>
                 <v-icon v-else>
@@ -64,10 +90,26 @@
                 </v-icon>
               </v-btn>
             </template>
-            <v-btn fab dark small color="green" @click="dialog = true">
+            <v-btn
+              fab
+              dark
+              small
+              color="green"
+              @click="dialog = true"
+              aria-label="bouton pour modifier le message"
+              title="bouton pour modifier le message"
+            >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
-            <v-btn fab dark small color="red" @click="deleteMessage()">
+            <v-btn
+              fab
+              dark
+              small
+              color="red"
+              @click="deleteMessage()"
+              aria-label="bouton pour supprimer le message"
+              title="bouton pour supprimer le message"
+            >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-speed-dial>
@@ -92,6 +134,8 @@
                 <v-spacer></v-spacer>
 
                 <v-btn
+                  aria-label="bouton pour valider la  modification du message"
+                  title="bouton pourvalider la modification du message"
                   text
                   color="primary"
                   @click="(dialog = false), updateMessage()"
@@ -129,6 +173,8 @@
             <v-card-actions>
               <v-list-item class="justify-end">
                 <v-btn
+                  aria-label="bouton pour retirer le like "
+                  title="bouton pour retirer le message"
                   icon
                   color="red"
                   v-if="userLikeSearch"
@@ -137,6 +183,8 @@
                   <v-icon class="mr-1">mdi-thumb-up</v-icon>
                 </v-btn>
                 <v-btn
+                  aria-label="bouton pour liker le message"
+                  title="bouton pour liker le message"
                   icon
                   color="grey"
                   v-else-if="!userLikeSearch"
@@ -146,7 +194,13 @@
                 </v-btn>
                 <span class="subheading mr-2 mt-1">{{ totalLikes }}</span>
                 <span class="mr-3">·</span>
-                <v-btn icon color="black" @click="dialog2 = !dialog2">
+                <v-btn
+                  icon
+                  color="black"
+                  @click="dialog2 = !dialog2"
+                  aria-label="bouton pour rajouter un commentaire"
+                  title="bouton pour rajouter un commentaire"
+                >
                   <v-dialog
                     v-if="$store.state.isUserLoggedIn"
                     v-model="dialog2"
@@ -173,6 +227,8 @@
                         <v-spacer></v-spacer>
 
                         <v-btn
+                          aria-label="bouton pour poster le commentaire "
+                          title="bouton pour poster le commentaire"
                           text
                           color="#33A8FF"
                           @click="(dialog2 = false), postComment()"
@@ -209,7 +265,14 @@
               v-if="isAdmin"
             >
               <template v-slot:activator>
-                <v-btn v-model="fabDotted" fab icon x-small>
+                <v-btn
+                  v-model="fabDotted"
+                  fab
+                  icon
+                  x-small
+                  aria-label="bouton pour afficher le menu des commentaires"
+                  title="bouton pour afficher le menu des commentaires"
+                >
                   <v-icon v-if="fabDotted">
                     mdi-close
                   </v-icon>
@@ -218,10 +281,20 @@
                   </v-icon>
                 </v-btn>
               </template>
-              <v-btn fab dark small color="green" @click="dialog3 = true">
+              <v-btn
+                fab
+                dark
+                small
+                color="green"
+                @click="dialog3 = true"
+                aria-label=" bouton pour modifier le commentaire"
+                title="bouton pour modifier le commentaire"
+              >
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
               <v-btn
+                aria-label=" bouton pour supprimer le commentaire"
+                title="bouton pour supprimer le commentaire"
                 fab
                 dark
                 small
@@ -241,7 +314,14 @@
               v-else-if="comment.userId == userId"
             >
               <template v-slot:activator>
-                <v-btn v-model="fabDotted" fab icon x-small>
+                <v-btn
+                  v-model="fabDotted"
+                  fab
+                  icon
+                  x-small
+                  aria-label=" bouton pour afficher le menu des commentaires"
+                  title="bouton pour afficher les menues des commentaires"
+                >
                   <v-icon v-if="fabDotted">
                     mdi-close
                   </v-icon>
@@ -250,10 +330,19 @@
                   </v-icon>
                 </v-btn>
               </template>
-              <v-btn fab small color="green" @click="dialog3 = true">
+              <v-btn
+                fab
+                small
+                color="green"
+                @click="dialog3 = true"
+                aria-label=" bouton pour modifier le commentaire"
+                title="bouton pour modifier le commentaire"
+              >
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
               <v-btn
+                aria-label=" bouton pour supprimer le commentaire"
+                title="bouton pour supprimer le commentaires"
                 fab
                 small
                 color="red"
@@ -283,6 +372,8 @@
                   <v-spacer></v-spacer>
 
                   <v-btn
+                    aria-label=" bouton pour valider la modification du commentaire"
+                    title="bouton pour valider la modification du commentaire"
                     text
                     color="primary"
                     @click="(dialog3 = false), updateComment(comment)"
@@ -344,6 +435,7 @@ export default {
       userLikeSearch: false,
       totalLikes: "",
       fabMaster: false,
+      fabUsers: true,
       fabDotted: false,
     };
   },
