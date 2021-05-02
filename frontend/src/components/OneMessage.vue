@@ -4,7 +4,14 @@
       <v-row align="center" justify="center" class="mb-5">
         <v-col cols="12" sm="12" md="8">
           <router-link :to="`/message/`">
-            <v-btn outlined absolute left text>
+            <v-btn
+              outlined
+              absolute
+              left
+              text
+              aria-label=" bouton pour retourner a l'ensemble des messages "
+              title="bouton pour retourner a l'ensemble des messages"
+            >
               <v-icon class="mr-2">mdi-undo</v-icon>
               Retour aux messages
             </v-btn>
@@ -23,7 +30,7 @@
           >
             <template v-slot:activator>
               <v-btn
-                aria-label="bouton pour afficher le menue dupression et modification"
+                aria-label="bouton pour afficher le menu des messages"
                 title="Bouton menu des messages"
                 class="mt-2 mr-1"
                 v-model="fabMaster"
@@ -70,7 +77,7 @@
             right
             direction="left"
             transition="slide-x-reverse-transition"
-            v-if="id == userId"
+            v-if="message.userId == userId"
           >
             <template v-slot:activator>
               <v-btn
@@ -435,7 +442,7 @@ export default {
       userLikeSearch: false,
       totalLikes: "",
       fabMaster: false,
-      fabUsers: true,
+      fabUsers: false,
       fabDotted: false,
     };
   },
