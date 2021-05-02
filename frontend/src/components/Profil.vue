@@ -19,6 +19,8 @@
                 @change="imgHandler"
               />
               <v-btn
+                aria-label=" bouton pour modifier l'avatar"
+                title="bouton pour modifier l'avatar'"
                 class=" mt-5  changeAvatar"
                 color="#33A8FF"
                 @click="changeAvatar"
@@ -43,6 +45,8 @@
                   >Description :</v-list-item-title
                 >
                 <v-btn
+                  aria-label=" bouton pour modifier la bio"
+                  title="bouton pour modifier la bio"
                   color="#33A8FF"
                   icon
                   class="mb-3"
@@ -52,6 +56,8 @@
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn
+                  aria-label=" bouton pour modifier la bio"
+                  title="bouton pour modifier la bio"
                   color="#33A8FF"
                   icon
                   class="mb-3"
@@ -90,6 +96,8 @@
                   v-model="changedBio"
                 ></v-textarea>
                 <v-btn
+                  aria-label=" bouton pour valider les modifications de la bio"
+                  title="bouton pour valider la modification de la bio"
                   color="#33A8FF"
                   icon
                   class="mb-3"
@@ -104,6 +112,8 @@
           </v-card-text>
           <v-card-actions class="btnSupUp" justify="end" align="end">
             <v-btn
+              aria-label=" bouton pour supprimer le profil"
+              title="bouton pour supprimer le profil"
               color="error"
               class="mb-3 mr-1 col-6 col-nd-4 col-lg-3"
               v-if="isAdmin"
@@ -113,6 +123,8 @@
               Supprimer
             </v-btn>
             <v-btn
+              aria-label=" bouton pour supprimer le profil"
+              title="bouton pour supprimer le profil"
               color="error"
               class="mb-3 mr-1 col-6 col-nd-4 col-lg-3"
               v-else-if="id == userId"
@@ -123,6 +135,8 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn
+              aria-label=" bouton pour sauvegarder le profil"
+              title="bouton pour sauvegarder le profil"
               color="#33A8FF"
               class="mb-3  mr-1 col-6 col-nd-4 col-lg-3"
               @click="updateProfil()"
