@@ -24,6 +24,7 @@
                 class=" mt-5  changeAvatar"
                 color="#33A8FF"
                 @click="changeAvatar"
+                v-if="id == userId || isAdmin"
                 >Changer d'avatar
                 <v-icon>mdi-system-update-alt</v-icon>
               </v-btn>
@@ -135,6 +136,7 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn
+              v-if="id == userId || isAdmin"
               aria-label=" bouton pour sauvegarder le profil"
               title="bouton pour sauvegarder le profil"
               color="#33A8FF"

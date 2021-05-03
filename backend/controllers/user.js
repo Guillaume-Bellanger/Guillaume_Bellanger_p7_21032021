@@ -1,18 +1,18 @@
-const bcrypt = require("bcrypt"); //Permet le cryptage du mot de passe
+const bcrypt = require("bcrypt");
 const models = require("../models/");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const mailValidator = require("email-validator"); //Permet de s'assurer que l'utilisateur utilise une adresse email valide via une REGEX contenu dans ce plugin
-const passwordValidator = require("password-validator"); // Idem mais pour avoir un mot de passe fort via les propriétés contenues dans schema
+const mailValidator = require("email-validator");
+const passwordValidator = require("password-validator");
 const fs = require("fs");
 
 const schema = new passwordValidator();
 
 schema
   .is()
-  .min(8) // Minimum length 8
+  .min(8)
   .is()
-  .max(40) // Maximum length 100
+  .max(40)
   .has()
   .uppercase()
   .has()
@@ -60,8 +60,9 @@ exports.signup = (req, res, next) => {
     .then((userFound) => {
       if (!userFound) {
         bcrypt
-          .hash(req.body.password, 10) // 10 salage du password
+          .hash(req.body.password, 10) // 10 salage du password , on hash bien le MDP
           .then((hash) => {
+            // on hash le mdp de maniere crpyter dans la table pour la bdd
             const newUser = models.User.create({
               email: req.body.email,
               password: hash,
@@ -92,7 +93,7 @@ exports.login = (req, res, next) => {
     .then((userFound) => {
       if (userFound) {
         bcrypt
-          .compare(req.body.password, userFound.password)
+          .compare(req.body.password, userFound.password) // compare le MDP crypt a celui qui est rentré
           .then((valid) => {
             if (!valid) {
               return res
@@ -105,7 +106,7 @@ exports.login = (req, res, next) => {
               token: jwt.sign(
                 { userId: userFound.userId },
                 process.env.TOKEN, // Encodage du token via la variable d'environnement contenu dans le .env
-                { expiresIn: "3h" } // Expiration de la connexion au bout de 3h
+                { expiresIn: "3h" } // Expiration de la connexion au bout de 3h ( le token de cession est valide pd 3h)
               ),
             });
           })
